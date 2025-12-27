@@ -13,8 +13,8 @@ services:
       - WIREGUARD_PRIVATE_KEY=${WIREGUARD_PRIVATE_KEY?}
     image: qmcgaw/gluetun:v3.41.0
     ports:
-      - 6881:6881
-      - 6881:6881/udp
+      - 51820:51820
+      - 51820:51820/udp
       - 8080:8080
     restart: unless-stopped
 
@@ -22,6 +22,7 @@ services:
     environment:
       - PGID=1000
       - PUID=1000
+      - TORRENTING_PORT=51820
       - TZ=Europe/Athens
     image: lscr.io/linuxserver/qbittorrent:5.1.4
     network_mode: service:gluetun
