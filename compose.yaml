@@ -1,0 +1,31 @@
+services:
+  gluetun:
+    cap_add:
+      - NET_ADMIN
+    container_name: gluetun
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    environment:
+      - TZ=Europe/Athens
+      - VPN_SERVICE_PROVIDER=mullvad
+      - VPN_TYPE=wireguard
+      - WIREGUARD_ADDRESSES=${WIREGUARD_ADDRESSES?}
+      - WIREGUARD_PRIVATE_KEY=${WIREGUARD_PRIVATE_KEY?}
+    image: qmcgaw/gluetun:v3.41.0
+    ports:
+      - 6881:6881
+      - 6881:6881/udp
+      - 8080:8080
+    restart: unless-stopped
+
+  qbittorrent:
+    environment:
+      - PGID=1000
+      - PUID=1000
+      - TZ=Europe/Athens
+    image: lscr.io/linuxserver/qbittorrent:5.1.4
+    network_mode: service:gluetun
+    volumes:
+      - ./config:/config
+      - /mnt/media:/downloads
+    restart: unless-stopped
