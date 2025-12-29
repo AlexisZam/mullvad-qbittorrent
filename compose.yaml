@@ -28,5 +28,5 @@ services:
     network_mode: service:gluetun
     volumes:
       - ./config:/config
-      - /mnt/media:/downloads
+      - /mnt/media/Downloads:/downloads
     restart: unless-stopped
